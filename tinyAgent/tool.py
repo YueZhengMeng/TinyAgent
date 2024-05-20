@@ -13,7 +13,7 @@ import requests
 class Tools:
     def __init__(self) -> None:
         self.toolConfig = self._tools()
-    
+
     def _tools(self):
         tools = [
             {
@@ -44,3 +44,18 @@ class Tools:
         response = requests.request("POST", url, headers=headers, data=payload).json()
 
         return response['organic'][0]['snippet']
+
+    def google_search_new(self, search_query: str):
+        url = ("https://serpapi.com/search.json?engine=google&q=" + search_query
+               + "&api_key=" + os.getenv("SERP_API_KEY"))
+
+        response = requests.request("GET", url).json()
+
+        return response['organic_results'][0]['snippet']
+
+
+if __name__ == '__main__':
+    os.environ['SERP_API_KEY'] = "*"
+    test_tool = Tools()
+    result = test_tool.google_search_new("周杰伦是谁")
+    print(result)
